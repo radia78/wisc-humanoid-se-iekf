@@ -1,0 +1,5 @@
+mujoco
+pinocchio
+numpy
+scipy
+matplotlib
