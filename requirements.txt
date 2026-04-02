@@ -1,5 +1,6 @@
 mujoco
-pinocchio
+pin
+robot_descriptions
 numpy
 scipy
 matplotlib
