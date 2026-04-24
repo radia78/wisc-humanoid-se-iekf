@@ -20,3 +20,8 @@ class NoiseParams:
     contact_cov: np.ndarray = field(
         default_factory=lambda: np.eye(3) * 0.01
     )
+    # Per-foot contact-position bias random-walk process noise (body frame).
+    # sigma_b ~ 1e-3 m/sqrt(s) per axis -> (1e-3)^2 = 1e-6.
+    bias_cov: np.ndarray = field(
+        default_factory=lambda: np.eye(3) * 1e-6
+    )

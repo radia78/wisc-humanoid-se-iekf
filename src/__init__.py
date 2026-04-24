@@ -4,6 +4,10 @@ from .lie_group import (
     sek3_exp, sek3_log, sek3_adjoint, sek3_inverse,
 )
 from .dynamics import IEKFDynamics
+from .contact_bias_iekf import (
+    ContactBiasIEKF, ContactBiasState,
+    IDX_PHI, IDX_V, IDX_P, IDX_DL, IDX_DR, IDX_BL, IDX_BR, DIM_ERR,
+)
 
 # Forward kinematics requires pinocchio + robot_descriptions at runtime.
 # Import lazily to avoid breaking modules that don't need it.
