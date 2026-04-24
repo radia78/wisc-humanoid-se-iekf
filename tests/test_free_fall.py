@@ -6,14 +6,11 @@ Drops the robot from rest with no rotation. After t seconds of free fall:
 
 Verifies that dynamics propagation matches analytical free-fall trajectory.
 """
-import sys
-from pathlib import Path
+
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-
-from src.dynamics import IEKFDynamics
-from src.types import IMUMeasurement, NoiseParams
+from humanoid.se.iekf.dynamics import IEKFDynamics
+from humanoid.se.iekf.types import IMUMeasurement, NoiseParams
 
 
 def test_free_fall():
@@ -56,12 +53,15 @@ def test_free_fall():
     print(f"p final:    {p}")
     print(f"p expected: {p_expected}")
 
-    np.testing.assert_allclose(v, v_expected, atol=1e-3,
-                               err_msg="Velocity doesn't match free-fall")
-    np.testing.assert_allclose(p, p_expected, atol=1e-3,
-                               err_msg="Position doesn't match free-fall")
-    np.testing.assert_allclose(R, np.eye(3), atol=1e-10,
-                               err_msg="Rotation should stay identity")
+    np.testing.assert_allclose(
+        v, v_expected, atol=1e-3, err_msg="Velocity doesn't match free-fall"
+    )
+    np.testing.assert_allclose(
+        p, p_expected, atol=1e-3, err_msg="Position doesn't match free-fall"
+    )
+    np.testing.assert_allclose(
+        R, np.eye(3), atol=1e-10, err_msg="Rotation should stay identity"
+    )
 
     print("\n[PASS] Free-fall test passed!")
 
