@@ -1,6 +1,0 @@
-mujoco
-pin
-robot_descriptions
-numpy
-scipy
-matplotlib

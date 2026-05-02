@@ -1,5 +1,5 @@
 [project]
-name = "humanoid"
+name = "whse"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -11,8 +11,10 @@ dependencies = [
     "msgpack>=1.1.2",
     "msgpack-numpy>=0.4.8",
     "mujoco>=3.7.0",
-    "pinocchio>=0.4.3",
+    "pin>=3.7.0",
     "robojudo",
+    "robot-descriptions>=1.23.0",
+    "scipy>=1.17.1",
     "unitree-rl-mjlab",
 ]
 

@@ -1,5 +1,8 @@
-from humanoid.se.sim.simulation import Simulator, MODEL_PATH, NPZ_PATH
+from whse.sim.simulation import Simulator
 
 if __name__ == "__main__":
-    sim = Simulator(xml_path=MODEL_PATH, npz_path=NPZ_PATH, show_viewer=True)
+    sim = Simulator(
+        npz_path="/Users/radiakbar/Documents/Projects/wisc-humanoid-se-iekf/data/dance_motion.npz",
+        show_viewer=True,
+    )
     sim.run()
