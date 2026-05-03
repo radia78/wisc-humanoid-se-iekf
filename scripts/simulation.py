@@ -7,10 +7,11 @@ import mujoco.viewer
 from typing import Optional
 from robot_descriptions.loaders.mujoco import load_robot_description
 
-from whse.iekf.types import IMUMeasurement, RobotState
-from whse.iekf.models.base import RIEKF
-from whse.kinematics import G1ForwardKinematics
+from iekf.kinematics import G1ForwardKinematics
+from iekf.right_invariant import RIEKF
+from iekf.utils.types import RobotState, IMUMeasurement
 
+import os
 
 class Simulator:
     def __init__(
@@ -56,6 +57,7 @@ class Simulator:
     def _init_states(self):
         state = RobotState()
         rot = Rotation(self.data.qpos[3:7], scalar_first=True)
+        np
         state.X = state.make_state(
             R=rot.as_matrix(),
             v=self.data.qvel[:3],
@@ -86,11 +88,14 @@ class Simulator:
         mujoco.mj_forward(self.model, self.data)
 
     def estimate_state(self, state: RobotState):
+        gyro_noise = np.random.normal(0.0, 0.01, (3,))
+        accel_noise = np.random.normal(0.0, 0.1, (3,))
+        encoder_noise = np.random.normal(0.0, np.pi / 180.0, (29,))
         imu_data = IMUMeasurement(
-            gyro=self.data.sensor("imu-pelvis-angular-velocity").data,
-            accel=self.data.sensor("imu-pelvis-linear-acceleration").data,
+            gyro=self.data.sensor("imu-pelvis-angular-velocity").data + gyro_noise,
+            accel=self.data.sensor("imu-pelvis-linear-acceleration").data + accel_noise,
         )
-        return self.iekf.predict(state, imu_data, self.data.qpos[7:])
+        return self.iekf.predict(state, imu_data, self.data.qpos[7:] + encoder_noise)
 
     def run(self):
         """Run the full simulation duration."""
@@ -107,7 +112,6 @@ class Simulator:
                 viewer.cam.lookat[2] = 1.0  # Optional: look slightly higher
 
                 for i in range(steps):
-                    self.step(i)
                     # Measure everything else
                     state = self.estimate_state(state)
 
@@ -121,8 +125,10 @@ class Simulator:
                     self.measurement_data["est_body_pos"].append(p)
                     self.measurement_data["est_body_vel"].append(v)
                     self.measurement_data["est_body_ort"].append(
-                        rot.as_quat(canonical=True, scalar_first=True)
+                        rot.as_quat(scalar_first=True)
                     )
+
+                    self.step(i)
 
                     if viewer.is_running():
                         viewer.sync()
@@ -132,7 +138,9 @@ class Simulator:
                 for key in self.measurement_data.keys():
                     self.measurement_data[key] = np.stack(self.measurement_data[key])
 
-                np.savez("dancing.npz", **self.measurement_data)
+                if not os.path.exists("results"):
+                    os.makedirs("results")
+                np.savez("results/dancing.npz", **self.measurement_data)
 
     def _should_stop(self) -> bool:
         """Check if simulation should terminate (e.g., end of motion data)."""

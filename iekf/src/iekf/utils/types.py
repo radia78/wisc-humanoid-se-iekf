@@ -15,6 +15,7 @@ class NoiseParams:
     contact_cov: np.ndarray = field(default_factory=lambda: np.eye(3) * 0.1**2)
 
 
+# Robot State with no bias augmentation
 @dataclass
 class RobotState:
     X: np.ndarray = field(default_factory=lambda: np.eye(7))
