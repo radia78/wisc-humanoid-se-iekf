@@ -1,15 +1,5 @@
-[project]
-name = "wisc-humanoid-se-iekf"
-version = "0.1.0"
-requires-python = ">=3.12"
+[tool.uv.workspace]
+members = ["iekf"]
 
-[tool.ruff]
-line-length = 88
-target-version = "py312"
-
-[tool.ruff.lint]
-select = ["E", "F", "I", "W"]
-ignore = ["E501"]
-
-[tool.ruff.format]
-quote-style = "double"
+[tool.uv.sources]
+tabarena = { workspace = true }

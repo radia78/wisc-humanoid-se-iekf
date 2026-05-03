@@ -1,0 +1,31 @@
+[project]
+name = "iekf"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.12"
+dependencies = [
+    "b2>=4.6.0",
+    "lerobot[unitree-g1]>=0.5.1",
+    "loguru>=0.7.3",
+    "msgpack>=1.1.2",
+    "msgpack-numpy>=0.4.8",
+    "mujoco>=3.7.0",
+    "pin>=3.7.0",
+    "robojudo",
+    "robot-descriptions>=1.23.0",
+    "scipy>=1.17.1",
+    "unitree-rl-mjlab",
+]
+[build-system]
+requires = ["uv_build>=0.11.3,<0.12.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "ruff>=0.15.11",
+]
+
+
+[tool.uv.sources]
+unitree-rl-mjlab = { git = "https://github.com/unitreerobotics/unitree_rl_mjlab.git" }
+robojudo = { git = "https://github.com/HansZ8/RoboJuDo.git" }
